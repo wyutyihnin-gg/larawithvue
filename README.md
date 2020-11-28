@@ -28,9 +28,9 @@ $fa-font-path:"../webfonts";
 @import '~bootstrap/scss/bootstrap';
 @import '~admin-lte/dist/css/adminlte.css';
 
-*@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
-*@import "~@fortawesome/fontawesome-free/scss/solid.scss";
-*@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+@import "(watermark)@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "(watermark)@fortawesome/fontawesome-free/scss/solid.scss";
+@import "(watermark)@fortawesome/fontawesome-free/scss/brands.scss";
 
 *Momentjs Instead of Carbon for datetime display 
 https://momentjs.com/
