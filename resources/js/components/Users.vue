@@ -34,8 +34,8 @@
                   <td>{{ user.id }}</td>
                   <td>{{ user.name }}</td>
                   <td>{{ user.email }}</td>
-                  <td>{{ user.type }}</td>
-                  <td>{{ user.created_at }}</td>
+                  <td>{{ user.type | upText }}</td>
+                  <td>{{ user.created_at | date }}</td>
                   <td>
                     <a href="#">
                       <i class="fa fa-edit blue"></i>
@@ -180,11 +180,24 @@ export default {
       axios.get("api/user").then(({ data }) => (this.users = data.data));
     },
     createUser() {
-      this.form.post("/api/user");
+      this.$Progress.start();
+      this.form.post("/api/user").then((res) => {
+        Fire.$emit("AfterCreated");
+        $("#addNewModal").modal("hide");
+        toast.fire({
+          icon: "success",
+          title: "Signed in successfully",
+        });
+      });
+      this.$Progress.finish();
     },
   },
   created() {
     this.loadUsers();
+    Fire.$on("AfterCreated", () => {
+      this.loadUsers();
+    });
+    // setInterval(() => this.loadUsers(), 3000);
   },
 };
 </script>

@@ -195,11 +195,25 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createUser: function createUser() {
-      this.form.post("/api/user");
+      this.$Progress.start();
+      this.form.post("/api/user").then(function (res) {
+        Fire.$emit("AfterCreated");
+        $("#addNewModal").modal("hide");
+        toast.fire({
+          icon: "success",
+          title: "Signed in successfully"
+        });
+      });
+      this.$Progress.finish();
     }
   },
   created: function created() {
+    var _this2 = this;
+
     this.loadUsers();
+    Fire.$on("AfterCreated", function () {
+      _this2.loadUsers();
+    }); // setInterval(() => this.loadUsers(), 3000);
   }
 });
 
@@ -240,9 +254,9 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(user.email))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(user.type))]),
+                    _c("td", [_vm._v(_vm._s(_vm._f("upText")(user.type)))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(user.created_at))]),
+                    _c("td", [_vm._v(_vm._s(_vm._f("date")(user.created_at)))]),
                     _vm._v(" "),
                     _vm._m(2, true)
                   ])
