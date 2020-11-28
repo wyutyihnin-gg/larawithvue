@@ -9,7 +9,7 @@ Laravel7 with vue2
 -npm install @fontawesome/fontawesome-free
 -npm install vue-router
 
-~import in app.js
+*import in app.js
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -18,9 +18,9 @@ const router = new VueRouter({
     routes
 })
 
-~for vForm use this link - https://github.com/cretueusebiu/vform
+*for vForm use this link - https://github.com/cretueusebiu/vform
 
-~import in app.scss
+*import in app.scss
 
 $fa-font-path:"../webfonts";
 
@@ -32,29 +32,30 @@ $fa-font-path:"../webfonts";
 @import "~@fortawesome/fontawesome-free/scss/solid.scss";
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
-~Momentjs Instead of Carbon for datetime display 
+*Momentjs Instead of Carbon for datetime display 
 https://momentjs.com/
 npm install moment --save
 
-~in app.js
+*in app.js
 import moment from 'moment'
 
-~use vue-progressbar
+*use vue-progressbar
 https://hilongjw.github.io/vue-progressbar/
 npm install vue-progressbar --save
 
-~sweet alert
+*sweet alert
 https://sweetalert2.github.io/#download
 npm install sweetalert2
 
-To hide model after create,update
+*To hide model after create,update
 use this > $("#modal").modal("hide");
 
-~custom event ( for component communication)
+*custom event ( for component communication)
 $emit ( create an event)
-delcare ~window.Fire=new Vue()~ in app.js to can call everywhere of application.
-then, in create function ~Fire.$emit('emitName')~ , then created() ~Fire.$on('emitName', ()=> function name that you want to call ).
-~anywhere in your application,
+delcare window.Fire=new Vue() in app.js to can call everywhere of application.
+then, in create function Fire.$emit('emitName') ,
+then created() Fire.$on('emitName', ()=> function name that you want to call ).
+anywhere in your application,
  you have access this portion(Fire.$on('emitName', ()=> function()) 
 ( meaning is if you create something here, any component in your application can listen for the event, this is called component commnication)
 
