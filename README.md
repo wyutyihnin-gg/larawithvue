@@ -59,3 +59,5 @@ anywhere in your application,
  you have access this portion(Fire.$on('emitName', ()=> function()) 
 ( meaning is if you create something here, any component in your application can listen for the event, this is called component commnication)
 
+*create edit and add user within one modal
+for create , to remove autocomplete use reset() that already has in vform installation (https://github.com/cretueusebiu/vform)

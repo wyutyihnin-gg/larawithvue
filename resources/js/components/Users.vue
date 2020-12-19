@@ -10,7 +10,8 @@
               <button
                 class="btn btn-success"
                 data-toggle="modal"
-                data-target="#addNewModal"
+                data-target="#addNew"
+                @click="newModal"
               >
                 <i class="fa fa-user-plus"></i> Add New
               </button>
@@ -37,7 +38,7 @@
                   <td>{{ user.type | upText }}</td>
                   <td>{{ user.created_at | date }}</td>
                   <td>
-                    <a href="#">
+                    <a href="#" @click="editModal(user)">
                       <i class="fa fa-edit blue"></i>
                     </a>
                     /
@@ -58,16 +59,19 @@
     <!--Add New Modal -->
     <div
       class="modal fade"
-      id="addNewModal"
+      id="addNew"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="addNewModalLabel"
+      aria-labelledby="addNewLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addNewModalLabel">Add New</h5>
+            <h5 v-if="editmode" class="modal-title" id="updateLabel">
+              Update User Data
+            </h5>
+            <h5 v-else class="modal-title" id="addNewLabel">Add New</h5>
             <button
               type="button"
               class="close"
@@ -77,7 +81,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form @submit.prevent="createUser">
+          <form @submit.prevent="editmode ? updateUser() : createUser()">
             <div class="modal-body">
               <div class="form-group">
                 <input
@@ -151,7 +155,12 @@
               <button type="button" class="btn btn-danger" data-dismiss="modal">
                 Close
               </button>
-              <button type="submit" class="btn btn-primary">Create</button>
+              <button v-if="editmode" type="submit" class="btn btn-success">
+                Update
+              </button>
+              <button v-else type="submit" class="btn btn-primary">
+                Create
+              </button>
             </div>
           </form>
         </div>
@@ -164,8 +173,10 @@
 export default {
   data() {
     return {
+      editmode: false,
       users: {},
       form: new Form({
+        id: "",
         name: "",
         email: "",
         password: "",
@@ -176,20 +187,52 @@ export default {
     };
   },
   methods: {
+    newModal() {
+      this.editmode = false;
+      this.form.reset();
+      $("#addNew").modal("show");
+    },
+    editModal(user) {
+      this.editmode = true;
+      this.form.reset();
+      $("#addNew").modal("show");
+      this.form.fill(user);
+    },
     loadUsers() {
       axios.get("api/user").then(({ data }) => (this.users = data.data));
     },
     createUser() {
       this.$Progress.start();
-      this.form.post("/api/user").then((res) => {
-        Fire.$emit("AfterCreated");
-        $("#addNewModal").modal("hide");
-        toast.fire({
-          icon: "success",
-          title: "Signed in successfully",
+      console.log(this.form)
+      this.form
+        .post("/api/user")
+        .then(() => {
+          Fire.$emit("AfterCreated");
+          $("#addNew").modal("hide");
+          toast.fire({
+            icon: "success",
+            title: "Create user in successfully",
+          });
+        })
+        .catch(() => {
+          console.log("Create user failed");
         });
-      });
       this.$Progress.finish();
+    },
+    updateUser() {
+      this.$Progress.start();
+      this.form
+        .put("/api/user/" + this.form.id)
+        .then((res) => {
+            Fire.$emit("AfterCreated");
+          $("#addNew").modal("hide");
+          Swal.fire("Updated!", "Information has been updated!", "success");
+          this.$Progress.finish();
+        })
+        .catch(() => {
+          this.$Progress.fail();
+          console.log("Update user failed");
+        });
     },
   },
   created() {
